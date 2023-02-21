@@ -1,13 +1,14 @@
 import React from "react";
 
 import logo from "../../assets/img/logo.svg";
+import { Container } from "../Container/Container.jsx";
 
 import styles from "./Header.module.css";
 
 export const Header = () => {
   return (
     <header className={styles.header}>
-      <div className={styles.header__container}>
+      <Container className={styles.header__container}>
         <img
           className={styles.header__logo}
           src={logo}
@@ -22,7 +23,7 @@ export const Header = () => {
 
           <p className={styles.header__appeal}>Бесплатная доставка от 599₽</p>
         </div>
-      </div>
+      </Container>
     </header>
   );
 };
