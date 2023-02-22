@@ -1,70 +1,44 @@
 import React from "react";
 import classNames from "classnames";
+import { useDispatch, useSelector } from "react-redux";
 
+import { changeCategory } from "../../store/category/categorySlice.js";
 import { Container } from "../Container/Container.jsx";
 
 import styles from "./Navigation.module.css";
 
 export const Navigation = () => {
+  const { category, activeCategory } = useSelector((state) => state.category);
+
+  const dispatch = useDispatch();
+
   return (
     <nav className={styles.navigation}>
       <Container className={styles.container}>
         <ul className={styles.list}>
-          <li className={styles.item}>
-            <button
-              className={classNames(
-                styles.button,
-                styles.button_burger,
-                styles.button_active
-              )}
+          {category.map((item, ind) => (
+            <li
+              key={ind}
+              className={styles.item}
             >
-              Бургеры
-            </button>
-          </li>
-          <li className={styles.item}>
-            <button className={classNames(styles.button, styles.button_snack)}>
-              Закуски
-            </button>
-          </li>
-          <li className={styles.item}>
-            <button className={classNames(styles.button, styles.button_hotdog)}>
-              Хот-доги
-            </button>
-          </li>
-          <li className={styles.item}>
-            <button className={classNames(styles.button, styles.button_combo)}>
-              Комбо
-            </button>
-          </li>
-          <li className={styles.item}>
-            <button
-              className={classNames(styles.button, styles.button_shawarma)}
-            >
-              Шаурма
-            </button>
-          </li>
-          <li className={styles.item}>
-            <button className={classNames(styles.button, styles.button_pizza)}>
-              Пицца
-            </button>
-          </li>
-          <li className={styles.item}>
-            <button className={classNames(styles.button, styles.button_wok)}>
-              Вок
-            </button>
-          </li>
-          <li className={styles.item}>
-            <button
-              className={classNames(styles.button, styles.button_dessert)}
-            >
-              Десерты
-            </button>
-          </li>
-          <li className={styles.item}>
-            <button className={classNames(styles.button, styles.button_sauce)}>
-              Соусы
-            </button>
-          </li>
+              <button
+                className={classNames(
+                  styles.button,
+                  activeCategory === ind ? styles.button_active : ""
+                )}
+                style={{ backgroundImage: `url(${item.image})` }}
+                onClick={() => {
+                  dispatch(
+                    changeCategory({
+                      indexCategory: ind,
+                    })
+                  );
+                }}
+              >
+                {item.rus}
+              </button>
+            </li>
+          ))}
         </ul>
       </Container>
     </nav>
