@@ -20,6 +20,13 @@
   gap: 10px;
 }
 
+.alert {
+  color: #ff7020;
+  font-size: 25px;
+  text-align: center;
+  margin-top: 50px;
+}
+
 @media (min-width: 1024px) {
   .catalog {
     margin-bottom: 100px;
