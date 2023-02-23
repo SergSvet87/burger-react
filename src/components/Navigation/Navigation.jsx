@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
-import { changeCategory } from "../../store/category/categorySlice.js";
+import { API_URI } from "../../../const.js";
+import {
+  categoryRequestAsync,
+  changeCategory,
+} from "../../store/category/categorySlice.js";
 import { Container } from "../Container/Container.jsx";
 
 import styles from "./Navigation.module.css";
@@ -12,34 +16,40 @@ export const Navigation = () => {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(categoryRequestAsync("max"));
+  }, []);
+
   return (
     <nav className={styles.navigation}>
-      <Container className={styles.container}>
-        <ul className={styles.list}>
-          {category.map((item, ind) => (
-            <li
-              key={ind}
-              className={styles.item}
-            >
-              <button
-                className={classNames(
-                  styles.button,
-                  activeCategory === ind ? styles.button_active : ""
-                )}
-                style={{ backgroundImage: `url(${item.image})` }}
-                onClick={() => {
-                  dispatch(
-                    changeCategory({
-                      indexCategory: ind,
-                    })
-                  );
-                }}
+      <Container>
+        <div className={styles.container}>
+          <ul className={styles.list}>
+            {category.map((item, ind) => (
+              <li
+                key={item.title}
+                className={styles.item}
               >
-                {item.rus}
-              </button>
-            </li>
-          ))}
-        </ul>
+                <button
+                  className={classNames(
+                    styles.button,
+                    activeCategory === ind ? styles.button_active : ""
+                  )}
+                  style={{ backgroundImage: `url(${API_URI}/${item.image})` }}
+                  onClick={() => {
+                    dispatch(
+                      changeCategory({
+                        indexCategory: ind,
+                      })
+                    );
+                  }}
+                >
+                  {item.rus}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </Container>
     </nav>
   );
