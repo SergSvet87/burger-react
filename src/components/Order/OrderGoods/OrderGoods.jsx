@@ -1,24 +1,26 @@
 import React from "react";
 
+import { API_URI } from "../../../../const.js";
+
 import styles from "./OrderGoods.module.css";
 
-export const OrderGoods = ({ title }) => {
+export const OrderGoods = ({ item }) => {
   return (
     <>
       <img
         className={styles.image}
-        src="img/burger_1.jpg"
-        alt={title}
+        src={`${API_URI}/${item.image}`}
+        alt={item.title}
       />
 
       <div className={styles.goods}>
-        <h3 className={styles.title}>{title}</h3>
+        <h3 className={styles.title}>{item.title}</h3>
 
-        <p className={styles.weight}>512г</p>
+        <p className={styles.weight}>{item.weight} г</p>
 
         <p className={styles.price}>
-          1279
-          <span className="currency">₽</span>
+          {item.price}
+          <span className="currency">&nbsp;₽</span>
         </p>
       </div>
     </>

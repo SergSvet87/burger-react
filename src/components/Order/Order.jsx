@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import styles from "./Order.module.css";
+import { orderRequestAsync } from "../../store/order/orderSlice.js";
+import { openModal } from "../../store/modalDelivery/modalDeliverySlice.js";
 import { Count } from "../Count/Count.jsx";
 import { OrderGoods } from "./OrderGoods/OrderGoods.jsx";
 
-const orderList = ["Супер сырный", "Картошка фри", "Жгучий хот-дог"];
+import styles from "./Order.module.css";
 
 export const Order = () => {
+  const { totalPrice, totalCount, orderList, orderGoods } = useSelector(
+    (state) => state.order
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(orderRequestAsync());
+  }, [orderList.length]);
+
   return (
     <div className={styles.order}>
       <section className={styles.wrapper}>
@@ -17,16 +29,22 @@ export const Order = () => {
         >
           <h2 className={styles.title}>Корзина</h2>
 
-          <span className={styles.count}>4</span>
+          <span className={styles.count}>{totalCount}</span>
         </div>
 
         <div className={styles.wrap_list}>
           <ul className={styles.list}>
-            {orderList.map((item, ind) => (
-              <li key={ind} className={styles.item}>
-                <OrderGoods title={item} />
+            {orderGoods.map((item) => (
+              <li
+                key={item.id}
+                className={styles.item}
+              >
+                <OrderGoods item={item} />
 
-                <Count count={2} />
+                <Count
+                  count={item.count}
+                  id={item.id}
+                />
               </li>
             ))}
           </ul>
@@ -34,12 +52,20 @@ export const Order = () => {
           <div className={styles.total}>
             <p>Итого</p>
             <p>
-              <span className={styles.amount}>1279</span>
-              <span className="currency">₽</span>
+              <span className={styles.amount}>{totalPrice} </span>
+              <span className="currency">&nbsp; ₽</span>
             </p>
           </div>
 
-          <button className={styles.submit}>Оформить заказ</button>
+          <button
+            className={styles.submit}
+            disabled={orderGoods.length === 0}
+            onClick={() => {
+              dispatch(openModal());
+            }}
+          >
+            Оформить заказ
+          </button>
 
           <div className={styles.apeal}>
             <p className={styles.text}>Бесплатная доставка</p>

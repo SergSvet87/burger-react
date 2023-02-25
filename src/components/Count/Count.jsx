@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch } from "react-redux";
+
+import { addProduct, removeProduct } from "../../store/order/orderSlice.js";
 
 import styles from "./Count.module.css";
 
-export const Count = (props) => {
-  const [count, setCount] = useState(props.count);
+export const Count = ({ count, id }) => {
+  const dispatch = useDispatch();
 
   const addCount = () => {
-    setCount(count + 1);
+    dispatch(addProduct({ id }));
   };
 
   const removeCount = () => {
-    if (count > 1) {
-      setCount(count - 1);
-    }
+    dispatch(removeProduct({ id }));
   };
 
   return (
@@ -20,7 +21,7 @@ export const Count = (props) => {
       <button
         className={styles.minus}
         onClick={removeCount}
-        disabled={count === 1}
+        // disabled={count === 1}
       >
         -
       </button>
